@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.lebaoxun.commons.beans.PropertyConfigurer;
 import com.lebaoxun.commons.exception.I18nMessageException;
-import com.lebaoxun.commons.exception.SuccessMessage;
+import com.lebaoxun.commons.exception.ResponseMessage;
 
 @Component
 public class ExceptionI18nProcessor {
@@ -22,8 +22,8 @@ public class ExceptionI18nProcessor {
 	
 	private PropertyConfigurer propertyConfigurer;
 	
-	public SuccessMessage exceptionHandler(Exception e) {
-		SuccessMessage message = new SuccessMessage();
+	public ResponseMessage exceptionHandler(Exception e) {
+		ResponseMessage message = new ResponseMessage();
     	I18nMessageException i18ne = null;
     	if(!(e instanceof I18nMessageException)){
     		i18ne = new I18nMessageException(e);

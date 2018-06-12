@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.lebaoxun.commons.exception.SuccessMessage;
+import com.lebaoxun.commons.exception.ResponseMessage;
 
 @ControllerAdvice
 @ResponseBody
@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 	private ExceptionI18nProcessor exceptionI18nProcessor;
 	
     @ExceptionHandler//处理所有异常
-    public SuccessMessage exceptionHandler(Exception e, HttpServletResponse response) {
+    public ResponseMessage exceptionHandler(Exception e, HttpServletResponse response) {
     	logger.error("error",e);
     	return exceptionI18nProcessor.exceptionHandler(e);
     }

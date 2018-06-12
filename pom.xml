@@ -23,6 +23,7 @@
 	<module>soa-quartz-core</module>
 	<module>soa-rediscache</module>
 	<module>soa-web-framework</module>
+	<module>soa-shiro-oauth2</module>
   </modules>
 
   <properties>
@@ -90,6 +91,11 @@
 	   <dependency>
 	    	<groupId>com.lebaoxun</groupId>
 	    	<artifactId>soa-quartz-core</artifactId>
+	    	<version>1.0.0-RELEASE</version>
+       </dependency>
+	   <dependency>
+	    	<groupId>com.lebaoxun</groupId>
+	    	<artifactId>soa-shiro-oauth2</artifactId>
 	    	<version>1.0.0-RELEASE</version>
        </dependency>
 	  <dependency>

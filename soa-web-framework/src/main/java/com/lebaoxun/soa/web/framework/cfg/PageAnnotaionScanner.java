@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 
 import com.lebaoxun.soa.web.framework.interceptor.MybatisPageInterceptor;
 
-@Configuration
+/*@Configuration
 @AutoConfigureAfter(SqlSessionFactory.class)
 public class PageAnnotaionScanner implements InitializingBean{
 	
@@ -36,3 +36,4 @@ public class PageAnnotaionScanner implements InitializingBean{
 		
 	}
 }
+*/

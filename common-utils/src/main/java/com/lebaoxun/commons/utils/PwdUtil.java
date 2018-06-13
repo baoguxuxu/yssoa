@@ -22,7 +22,7 @@ public class PwdUtil {
 	/**
 	 * 用户密码加密处理
 	 */
-	public static String getMd5Password(String account, String pwd) {
+	public static String getMd5Password(String key, String account, String pwd) {
 		if (account==null || account.isEmpty() || pwd==null || pwd.isEmpty()) {
 			throw new RuntimeException("账号或密码不能为空");
 		}
@@ -55,6 +55,10 @@ public class PwdUtil {
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
 			throw new RuntimeException("账户密码加密失败", ex);
 		}
+	}
+	
+	public static String getMd5Password(String account, String pwd) {
+		return getMd5Password(key, account, pwd);
 	}
 	
 	/**

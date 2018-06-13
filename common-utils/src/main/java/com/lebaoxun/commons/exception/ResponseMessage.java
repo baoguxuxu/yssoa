@@ -1,6 +1,8 @@
 package com.lebaoxun.commons.exception;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ResponseMessage implements Serializable{
 	/**
@@ -17,6 +19,13 @@ public class ResponseMessage implements Serializable{
 	public static ResponseMessage ok(){
 		return new ResponseMessage();
 	}
+	
+	public ResponseMessage put(String key,Object value){
+		Map<String,Object> model = new HashMap<String,Object>();
+		model.put(key, value);
+		this.data = model;
+		return this;
+	} 
 	
 	public static ResponseMessage ok(Object data){
 		return new ResponseMessage(data);

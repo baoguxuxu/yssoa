@@ -1,4 +1,4 @@
-package com.lebaoxun.soa.web.xss;
+package com.lebaoxun.commons.xss;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

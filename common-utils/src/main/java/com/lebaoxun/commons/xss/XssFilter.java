@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.lebaoxun.soa.web.xss;
+package com.lebaoxun.commons.xss;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

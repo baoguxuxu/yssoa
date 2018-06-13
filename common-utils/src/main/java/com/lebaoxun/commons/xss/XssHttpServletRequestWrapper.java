@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.lebaoxun.soa.web.xss;
+package com.lebaoxun.commons.xss;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;

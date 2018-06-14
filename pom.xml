@@ -40,7 +40,6 @@
   	<java.version>1.8</java.version>
 	
 	<mybatisplus.version>2.1.9</mybatisplus.version>
-	<mybatisplus.spring.boot.version>1.0.5</mybatisplus.spring.boot.version>
   </properties>
 
   <dependencies>
@@ -297,8 +296,14 @@
         </dependency>
 		<dependency>
 			<groupId>com.baomidou</groupId>
-			<artifactId>mybatisplus-spring-boot-starter</artifactId>
-			<version>${mybatisplus.spring.boot.version}</version>
+			<artifactId>mybatis-plus-boot-starter</artifactId>
+			<version>${mybatisplus.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>spring-boot-test-support</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 	  </dependencies>
   </dependencyManagement>

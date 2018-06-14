@@ -45,6 +45,9 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     	if(StringUtils.isBlank(token)){
     		token = request.getHeader("token");
     	}
+    	if(StringUtils.isBlank(token)){
+    		token = request.getParameter("token");
+    	}
     	Oauth2AccessToken.setToken(token);
     	Long userId = null;
     	if(StringUtils.isBlank(token) || "null".equals(token)

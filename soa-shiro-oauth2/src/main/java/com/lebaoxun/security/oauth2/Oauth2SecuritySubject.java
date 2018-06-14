@@ -194,7 +194,7 @@ public class Oauth2SecuritySubject{
 	public Long getCurrentUser() {
 		String assess_token = Oauth2AccessToken.getToken();
 		try {
-			return (Long)redisCache.get("oauth2:user:"+assess_token);
+			return ((Oauth2UserLog)redisCache.get("oauth2:user:"+assess_token)).getUserId();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -274,15 +274,15 @@ public class Oauth2SecuritySubject{
     	return true;
 	}
 	
-	public Object getSessionAccount(String account){
+	public Long getSessionUser(String account){
 		if(StringUtils.isNotBlank(account)){
 			String openid;
 			try {
 				openid = openidDes.encrypt(account);
 				String openidKey = "oauth2:assess_token:"+openid;
 				if(redisCache.exists(openidKey)){
-					String otherToken = (String)redisCache.get(openidKey);
-					return redisCache.get("oauth2:user:"+otherToken);
+					String assess_token = (String)redisCache.get(openidKey);
+					return ((Oauth2UserLog)redisCache.get("oauth2:user:"+assess_token)).getUserId();
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

@@ -21,10 +21,8 @@ public interface IRedisCache {
 	 *            value值
 	 * @return
 	 */
-	public boolean set(String key, Object obj);
+	void set(String key, Object obj);
 	
-	public boolean setSys(String key, Object obj);
-
 	/**
 	 * 
 	 * @param space
@@ -37,7 +35,7 @@ public interface IRedisCache {
 	 *            超时时间，单位 秒
 	 * @return
 	 */
-	public boolean set(String key, Object obj, Long expire);
+	void set(String key, Object obj, Long expire);
 
 
 	/**
@@ -71,8 +69,6 @@ public interface IRedisCache {
 	 */
 	public boolean exists(String key);
 	
-	public boolean has(String key);
-
 	/**
 	 * 清空操作
 	 * 
@@ -82,19 +78,6 @@ public interface IRedisCache {
 	 *            通配 mobile_ 删除mobile_*所有的key；null值是删除 RedisSpace *
 	 */
 	public int size(String key);
-
-	/**
-	 * 更新
-	 * 
-	 * @param space
-	 *            见枚举类RedisSpace定义
-	 * @param key
-	 *            key值
-	 * @param obj
-	 *            新值
-	 * @return
-	 */
-	public boolean update(String key, Object obj);
 
 	/**
 	 * 更新
@@ -118,8 +101,6 @@ public interface IRedisCache {
 	 */
 	public Object get(String key);
 	
-	public Object getSys(String key);
-
 	/**
 	 * 设置超时时间
 	 * 
@@ -135,7 +116,7 @@ public interface IRedisCache {
 	 * 累加
 	 * @param key
 	 */
-	public void incByKey(String key);
+	public void increment(String key,long delta);
 
 	/**
 	 * 获取指定key的集合

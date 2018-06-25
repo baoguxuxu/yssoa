@@ -57,7 +57,7 @@ public class PwdUtil {
 		}
 	}
 	
-	public static String getMd5Password(String account, String pwd) {
+	private static String getMd5Password(String account, String pwd) {
 		return getMd5Password(key, account, pwd);
 	}
 	

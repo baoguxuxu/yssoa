@@ -12,4 +12,6 @@ public interface IOuath2UserService {
 	void saveLoginLog(Oauth2UserLog log);
 	
 	List<Oauth2VisitPath> findWhiteAccess();
+	
+	String getScope();
 }

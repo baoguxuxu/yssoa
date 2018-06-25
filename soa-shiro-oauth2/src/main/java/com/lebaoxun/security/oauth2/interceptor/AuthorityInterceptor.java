@@ -41,6 +41,10 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, 
     		Object handler) throws Exception {
+    	if(HttpServletResponse.SC_NOT_FOUND == response.getStatus()){
+    		response.sendRedirect("/404.html");
+    		return true;
+    	}
     	String token = request.getHeader("Authorization");
     	if(StringUtils.isBlank(token)){
     		token = request.getHeader("token");
@@ -48,12 +52,12 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     	if(StringUtils.isBlank(token)){
     		token = request.getParameter("token");
     	}
+    	logger.debug("token={}",token);
     	Oauth2AccessToken.setToken(token);
     	Long userId = null;
     	if(StringUtils.isBlank(token) || "null".equals(token)
     			||  !oauth2SecuritySubject.checkToken(token) || 
     			(userId = oauth2SecuritySubject.getCurrentUser()) == null){
-    		logger.debug("token={}",token);
     		writeError(response, "10003");
     		return false;
     	}
@@ -71,7 +75,12 @@ public class AuthorityInterceptor implements HandlerInterceptor {
     private void writeError(HttpServletResponse response,String code) throws IOException{
     	Gson gson = new Gson();
 		ResponseMessage _i18n = new ResponseMessage();
-		String msg = props.getProperty(code);
+		String msg = "未知错误！";
+		if(code != null && props != null && props.containsKey(code)){
+			msg = props.getProperty(code);
+		}else{
+			logger.error("errcode no found ‘{}’",code);
+		}
 		_i18n.setErrcode(code);
 		_i18n.setErrmsg(msg);
 		String jsonString = gson.toJson(_i18n);
@@ -92,6 +101,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
 			HttpServletResponse arg1, Object arg2, Exception arg3)
 			throws Exception {
 		// TODO Auto-generated method stub
+		logger.debug("oauth2 token remove");
 		Oauth2AccessToken.remove();
 	}
 

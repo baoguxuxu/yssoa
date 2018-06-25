@@ -16,10 +16,12 @@
 
 package com.lebaoxun.commons.utils;
 
-import com.baomidou.mybatisplus.plugins.Page;
-
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import com.baomidou.mybatisplus.plugins.Page;
 
 /**
  * 分页工具类
@@ -106,5 +108,5 @@ public class PageUtils implements Serializable {
 	public void setList(List<?> list) {
 		this.list = list;
 	}
-	
+
 }

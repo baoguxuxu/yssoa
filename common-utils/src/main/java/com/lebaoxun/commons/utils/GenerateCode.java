@@ -23,6 +23,16 @@ public class GenerateCode {
         }
         return Integer.parseInt(current);
     }
+    
+    public static long gen16(int inputnum) {
+    	int num=inputnum+2;
+        String current = String.valueOf((java.util.UUID.randomUUID().getLeastSignificantBits())).substring(2,num);
+
+        while (current.startsWith("0") || isFourSame(current)) {
+            current = String.valueOf((java.util.UUID.randomUUID().getLeastSignificantBits())).substring(2, num);
+        }
+        return Long.parseLong(current);
+    }
 
     public static boolean isFourSame(String input) {
         Map<Integer, Integer> current = new HashMap<Integer, Integer>();

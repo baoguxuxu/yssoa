@@ -6,14 +6,14 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SpringConfigTool implements ApplicationContextAware {
+public class BeanFactoryUtils implements ApplicationContextAware {
 
 	private static ApplicationContext context = null;
-	private static SpringConfigTool stools = null;
+	private static BeanFactoryUtils stools = null;
 
-	public synchronized static SpringConfigTool init() {
+	public synchronized static BeanFactoryUtils init() {
 		if (stools == null) {
-			stools = new SpringConfigTool();
+			stools = new BeanFactoryUtils();
 		}
 		return stools;
 	}

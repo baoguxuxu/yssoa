@@ -18,6 +18,8 @@ package com.lebaoxun.commons.utils;
 
 
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
@@ -55,4 +57,95 @@ public class ValidatorUtils {
             throw new I18nMessageException(constraint.getMessage());
         }
     }
+    
+    /**
+	 * 验证只能输入字母或者数字
+	 * @param email
+	 * @return
+	 */
+	public static boolean checkNumberOrChar(String email) {
+		boolean flag = false;
+		try {
+			String check = "[0-9A-Za-z]*";
+			Pattern regex = Pattern.compile(check);
+			Matcher matcher = regex.matcher(email);
+			flag = matcher.matches();
+		} catch (Exception e) {
+			flag = false;
+		}
+		return flag;
+	}
+	
+	/**
+	 * 验证只能输入数字
+	 * @param email
+	 * @return
+	 */
+	public static boolean checkNumber(String email) {
+		boolean flag = false;
+		try {
+			String check = "[0-9]*";
+			Pattern regex = Pattern.compile(check);
+			Matcher matcher = regex.matcher(email);
+			flag = matcher.matches();
+		} catch (Exception e) {
+			flag = false;
+		}
+		return flag;
+	}
+	
+	/**
+	 * 校验微信号
+	 * @param weChat
+	 * @return
+	 */
+	public static boolean checkWechat(String weChat){
+		
+		boolean flag = false;
+		try {
+			String check = "[0-9a-zA-z-_]+$";
+			Pattern regex = Pattern.compile(check);
+			Matcher matcher = regex.matcher(weChat);
+			flag = matcher.matches();
+		} catch (Exception e) {
+			flag = false;
+		}
+		return flag;
+	}
+	/**
+	 * 校验手机号
+	 * @param tel
+	 * @return false true
+	 */
+	public static boolean checkTel(String tel){
+		
+		boolean flag = false;
+		try {
+			String check = "^((1[0-9]))\\d{9}$";
+			Pattern regex = Pattern.compile(check);
+			Matcher matcher = regex.matcher(tel);
+			flag = matcher.matches();
+		} catch (Exception e) {
+			flag = false;
+		}
+		return flag;
+	}
+	
+	//校验金额
+	public static boolean isBigDecimal(String str) {  
+        java.util.regex.Matcher match =null;  
+        if(checkNumber(str)==true){  
+            java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("[0-9]*");  
+            match = pattern.matcher(str.trim());  
+        }else{  
+            if(str.trim().indexOf(".")==-1){  
+                java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("^[+-]?[0-9]*");  
+                match = pattern.matcher(str.trim());  
+            }else{  
+                java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("^[+-]?[0-9]+(\\.\\d{1,100}){1}");  
+                match = pattern.matcher(str.trim());                  
+            }  
+        }  
+        return match.matches();
+	}
 }

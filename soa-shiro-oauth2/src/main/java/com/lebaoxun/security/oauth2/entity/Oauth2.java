@@ -1,4 +1,4 @@
-package com.lebaoxun.security.oauth2;
+package com.lebaoxun.security.oauth2.entity;
 
 public class Oauth2 {
 	

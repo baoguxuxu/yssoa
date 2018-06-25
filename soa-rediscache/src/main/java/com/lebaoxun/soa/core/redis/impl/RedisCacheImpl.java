@@ -59,11 +59,11 @@ public class RedisCacheImpl implements IRedisCache {
 		return redisTemplate.execute(new RedisCallback<Boolean>() {
 			public Boolean doInRedis(RedisConnection con)
 					throws DataAccessException {
-				long t = expire != null && expire > 0 ? expire : con.ttl(ks.getBytes());
+				Long t = expire != null && expire > 0 ? expire : con.ttl(ks.getBytes());
 
 				if (obj != null) {
 					if (t > 0) {
-						redisTemplate.opsForValue().set(ks, obj,expire,TimeUnit.SECONDS);
+						redisTemplate.opsForValue().set(ks, obj, t, TimeUnit.SECONDS);
 					}else{
 						redisTemplate.opsForValue().set(ks, obj);
 					}

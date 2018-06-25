@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import com.lebaoxun.commons.beans.BeanFactoryUtils;
 import com.lebaoxun.commons.exception.I18nMessageException;
 import com.lebaoxun.commons.utils.CodeUtil;
 import com.lebaoxun.commons.utils.CommonUtil;
 import com.lebaoxun.commons.utils.DesUtils;
 import com.lebaoxun.commons.utils.UAgentInfo;
+import com.lebaoxun.security.oauth2.entity.Oauth2;
 import com.lebaoxun.security.oauth2.entity.Oauth2UserLog;
 import com.lebaoxun.security.oauth2.entity.Oauth2VisitPath;
 import com.lebaoxun.soa.core.redis.IRedisCache;
@@ -33,9 +35,6 @@ public class Oauth2SecuritySubject{
 	private IRedisCache redisCache;
 	
 	@Resource
-	private IOuath2UserService ouath2UserService;
-	
-	@Resource
 	private DesUtils openidDes;
 	
 	@Resource
@@ -43,6 +42,10 @@ public class Oauth2SecuritySubject{
 	
 	@Value("${security.oauth2.expires_in:7200}")
 	private Long expires_in;
+	
+	IOuath2UserService getIOuath2UserService(){
+		return (IOuath2UserService)BeanFactoryUtils.getBean("ouath2UserService");
+	}
 	
 	public String getOpenid(String account){
 		String openid = null;
@@ -60,6 +63,8 @@ public class Oauth2SecuritySubject{
 	
 	public Oauth2 refreshToken(HttpServletRequest request,String openid){
 		try {
+			IOuath2UserService ouath2UserService = getIOuath2UserService();
+			String scope = ouath2UserService.getScope();
 			String userName = openidDes.decrypt(openid);
 			//logger.debug("account={},openid={}",account,openid);
 			Long userId = null;
@@ -97,10 +102,10 @@ public class Oauth2SecuritySubject{
 			//accountService.deleteCacheByAgentid(oub.getUserId());
 			String assess_token = tokenDes.encrypt(openid+","+System.currentTimeMillis()+","+CodeUtil.generateString(10));
 			//Long expires_in = 2 * 60 * 60l;
-			if(redisCache.exists("oauth2:assess_token:"+openid)){//当前帐号在其他地方登录，需要删除agent值
+			if(redisCache.exists(scope+":oauth2:assess_token:"+openid)){//当前帐号在其他地方登录，需要删除agent值
 				loginLog.setLogType("LOGIN_KICK_OUT");//此表示，本次登录有将其他登录踢出
-				String otherToken = (String)redisCache.get("oauth2:assess_token:"+openid);
-				Object obj = redisCache.get("oauth2:user:"+otherToken);
+				String otherToken = (String)redisCache.get(scope+":oauth2:assess_token:"+openid);
+				Object obj = redisCache.get(scope+":oauth2:user:"+otherToken);
 				
 				if(obj != null && obj instanceof Oauth2UserLog){
 					/*loginLog1.setLogType("LOGOUT_KICK_OUT");
@@ -109,14 +114,14 @@ public class Oauth2SecuritySubject{
 					loginLog1.setAdjunctInfo("KICK_OUT");
 					agentLogService.createLog(loginLog1);*/
 				}
-				redisCache.del("oauth2:user:"+otherToken);
+				redisCache.del(scope+":oauth2:user:"+otherToken);
 			}
 			
 			ouath2UserService.saveLoginLog(loginLog);
 			
-			redisCache.set("oauth2:assess_token:"+openid, assess_token, expires_in);
+			redisCache.set(scope+":oauth2:assess_token:"+openid, assess_token, expires_in);
 			//logger.debug("Oauth2UserBase.getAgentId={}",Oauth2UserBase.getAgentId());
-			redisCache.set("oauth2:user:"+assess_token, loginLog ,expires_in+10);
+			redisCache.set(scope+":oauth2:user:"+assess_token, loginLog ,expires_in+10);
 			Oauth2 oauth2 = new Oauth2();
 			oauth2.setAssess_token(assess_token);
 			oauth2.setOpenid(openid);
@@ -130,6 +135,7 @@ public class Oauth2SecuritySubject{
 	}
 	
 	public void updateLog(String accessToken,HttpServletRequest request){
+		IOuath2UserService ouath2UserService = getIOuath2UserService();
 		String userAgent = request.getHeader("User-Oauth2UserBase");  
 		String httpAccept = request.getHeader("Accept");
 		UAgentInfo detector = new UAgentInfo(userAgent, httpAccept);
@@ -148,10 +154,11 @@ public class Oauth2SecuritySubject{
 			platformSource = "pc";
 		}
 		platformSource += "_"+userAgent;
-		String key = "oauth2:user:"+accessToken;
+		String scope = ouath2UserService.getScope();
+		String key = scope+":oauth2:user:"+accessToken;
 		Object obj = redisCache.get(key);
 		if(obj != null && obj instanceof Oauth2UserLog){
-			Oauth2UserLog log= (Oauth2UserLog)obj;
+			Oauth2UserLog log = (Oauth2UserLog)obj;
 			int isUpdate = 0;
 			if(!platformSource.equals(log.getPlatformSource())){
 				log.setPlatformSource(platformSource);
@@ -171,10 +178,12 @@ public class Oauth2SecuritySubject{
 	
 	public boolean checkToken(String assess_token){
 		try {
+			IOuath2UserService ouath2UserService = getIOuath2UserService();
+			String scope = ouath2UserService.getScope();
 			String openid = getOpenidByToken(assess_token);
 			//logger.debug("openid={},assess_token={}",openid,assess_token);
-			return redisCache.exists("oauth2:assess_token:"+openid) && 
-					assess_token.equals(redisCache.get("oauth2:assess_token:"+openid));
+			return redisCache.exists(scope+":oauth2:assess_token:"+openid) && 
+					assess_token.equals(redisCache.get(scope+":oauth2:assess_token:"+openid));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -192,9 +201,20 @@ public class Oauth2SecuritySubject{
 	}
 	
 	public Long getCurrentUser() {
+		try {
+			return getCurrentUserLog().getUserId();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public Oauth2UserLog getCurrentUserLog() {
+		IOuath2UserService ouath2UserService = getIOuath2UserService();
 		String assess_token = Oauth2AccessToken.getToken();
 		try {
-			return ((Oauth2UserLog)redisCache.get("oauth2:user:"+assess_token)).getUserId();
+			String scope = ouath2UserService.getScope();
+			return ((Oauth2UserLog)redisCache.get(scope+":oauth2:user:"+assess_token));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -202,17 +222,19 @@ public class Oauth2SecuritySubject{
 	}
 	
 	public void logout() {
+		IOuath2UserService ouath2UserService = getIOuath2UserService();
+		String scope = ouath2UserService.getScope();
 		String assess_token = Oauth2AccessToken.getToken();
 		String openid;
 		logger.debug("assess_token={}",assess_token);
 		try {
 			if(StringUtils.isNotBlank(assess_token)){
 				openid = getOpenidByToken(assess_token);
-				String key = "oauth2:assess_token:"+openid;
+				String key = scope+":oauth2:assess_token:"+openid;
 				if(redisCache.exists(key)){
-					Object obj = redisCache.get("oauth2:user:"+assess_token);
+					Object obj = redisCache.get(scope+":oauth2:user:"+assess_token);
 					if(obj != null && obj instanceof Oauth2UserLog){
-						Oauth2UserLog log= (Oauth2UserLog)obj;
+						Oauth2UserLog log = (Oauth2UserLog)obj;
 						Oauth2UserLog loginLog = new Oauth2UserLog();
 						loginLog.setUserId(log.getUserId());
 						loginLog.setCreateTime(new Date());
@@ -222,7 +244,7 @@ public class Oauth2SecuritySubject{
 						ouath2UserService.saveLoginLog(loginLog);
 					}
 					redisCache.del(key);
-					redisCache.del("oauth2:user:"+assess_token);
+					redisCache.del(scope+":oauth2:user:"+assess_token);
 				}
 			}
 		} catch (Exception e) {
@@ -256,6 +278,7 @@ public class Oauth2SecuritySubject{
 	}
 	
 	public boolean isWhiteAccess(Long userId,String path){
+		IOuath2UserService ouath2UserService = getIOuath2UserService();
 		List<Oauth2VisitPath> paths = ouath2UserService.findWhiteAccess();
 		if(paths == null || paths.isEmpty()){
 			return check(userId, path);
@@ -274,15 +297,16 @@ public class Oauth2SecuritySubject{
     	return true;
 	}
 	
-	public Long getSessionUser(String account){
+	public Oauth2UserLog getSessionUser(String account,String scope){
 		if(StringUtils.isNotBlank(account)){
 			String openid;
 			try {
 				openid = openidDes.encrypt(account);
-				String openidKey = "oauth2:assess_token:"+openid;
+				logger.debug("openid={}",openid);
+				String openidKey = scope+":oauth2:assess_token:"+openid;
 				if(redisCache.exists(openidKey)){
 					String assess_token = (String)redisCache.get(openidKey);
-					return ((Oauth2UserLog)redisCache.get("oauth2:user:"+assess_token)).getUserId();
+					return (Oauth2UserLog)redisCache.get(scope+":oauth2:user:"+assess_token);
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

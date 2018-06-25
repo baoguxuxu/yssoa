@@ -247,7 +247,7 @@ public class CommonUtil {
 		if(StringUtils.isNotEmpty(ip) && !"unKnown".equalsIgnoreCase(ip)){
 			return ip;
 		}
-		return request.getRemoteAddr();
+		return "0:0:0:0:0:0:0:1".equals(request.getRemoteAddr())? "127.0.0.1":request.getRemoteAddr();
 	}
 
 	public static void main(String[] args){

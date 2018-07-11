@@ -279,7 +279,8 @@ public class FormulaCalculate {
 	}
 
 	public static void main(String[] args) {
-		String lots[] = new String[] { "08", "01", "06", "04", "10" };
+		String lots[] = new String[] { "3", "4", "8", "14", "3","3" };
+		System.out.println(check(lots, "#N2%2=0"));
 		System.out.println(check(lots, "(true&&1+2>=3)||true"));
 		System.out.println(check(lots, "((((#N1*#N3+#N4)%2=0||1+1=2)&&1+2>=3&&1+#N1=9)&&true)&&(true&&((1+2)*2*(2+4)=36))"));
 		//System.out.println("123&&123||".indexOf("&&"));

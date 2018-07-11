@@ -10,8 +10,8 @@ public interface IRedisHash{
 	 * @param v value值
 	 * @return
 	 */
-	Boolean hSet(String k,String f,Object v);
 	
+	Boolean hSet(String k,String f,Object v);
 	/**
 	 * 添加一个value到hash中。如果value已经存在于hash中，则返回false。
 	 * @param k key值

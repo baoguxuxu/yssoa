@@ -103,4 +103,14 @@ public class RedisSortedImpl implements IRedisSorted {
 			}
 		});
 	}
+	@Override
+	public Long zRank(String key, Object value) {
+		return redisTemplate.execute(new RedisCallback<Long>() {
+			public Long doInRedis(RedisConnection con) throws DataAccessException {
+				byte[] k = redisTemplate.getStringSerializer().serialize(key);
+				byte[] vbs = SerializeUtil.serialize(value);
+				return con.zRank(k, vbs);
+			}
+		});
+	}
 }

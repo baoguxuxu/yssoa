@@ -16,6 +16,8 @@ public interface IRedisSorted{
 	 */
 	public String zAdd(String key,double score,Object value); 
 	
+	Long zRank(String key,Object value);
+	
 	/**
 	 * 返回key对应的有序集合中score介于min和max之间的所有元素（包哈score等于min或者max的元素）。元素按照score从低到高的顺序排列。如果元素具有相同的score，那么会按照字典顺序排列。
 	 * @param space

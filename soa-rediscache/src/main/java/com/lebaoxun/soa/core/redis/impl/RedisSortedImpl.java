@@ -113,4 +113,8 @@ public class RedisSortedImpl implements IRedisSorted {
 			}
 		});
 	}
+	@Override
+	public boolean exists(String key) {
+		return redisTemplate.hasKey(key);
+	}
 }

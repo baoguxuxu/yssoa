@@ -14,7 +14,7 @@ public interface IRedisSorted{
 	 * @param value 
 	 * @return String null on failure，else create key
 	 */
-	public String zAdd(String key,double score,Object value); 
+	String zAdd(String key,double score,Object value); 
 	
 	Long zRank(String key,Object value);
 	
@@ -27,7 +27,7 @@ public interface IRedisSorted{
 	 * @param max score最大值
 	 * @return List<Object> 包含在指定范围内的值，按照score从低到高的顺序排列
 	 */
-	public List<Object> zRangeByScore(String key,double min,double max);
+	List<Object> zRangeByScore(String key,double min,double max);
 	
 	/**
 	 * 从有序集合中删除指定的成员。非现有成员被忽略。当键存在，并且不持有有序集合，则会返回错误。
@@ -36,7 +36,7 @@ public interface IRedisSorted{
 	 * @param key
 	 * @return 返回整型，成员来自有序集合(不包括非现有成员)被删除的数量。 1 on success, 0 on failure. 
 	 */
-	public Long zDel(String key,Object val);
+	Long zDel(String key,Object val);
 	
 	/**
 	 * 返回key对应的有序集合中介于min和max间的元素的个数。
@@ -47,7 +47,7 @@ public interface IRedisSorted{
 	 * @param max score最大值
 	 * @return 返回整数，有序集合score值在min和 max之间的成员的数量，或者如果键不存在则返回0。。
 	 */
-	public Long zCount(String key,double min,double max);
+	Long zCount(String key,double min,double max);
 	
 	/**
 	 * 返回存储在key对应的有序集合中的元素的个数。
@@ -56,7 +56,7 @@ public interface IRedisSorted{
 	 * @param key
 	 * @return 返回整数，有序集合的基数(元素的数量)，或者如果键不存在则返回0。
 	 */
-	public Long zSize(String key);
+	Long zSize(String key);
 	
 	/**
 	 * 返回key对应的有序集合中member的score值
@@ -66,5 +66,16 @@ public interface IRedisSorted{
 	 * @param value
 	 * @return Double，如果key在有序集合中不存在，那么将会返回null。
 	 */
-	public Double zScore(String key,Object value);
+	Double zScore(String key,Object value);
+	
+	/**
+	 * 判断key是否存在
+	 * 
+	 * @param space
+	 *            见枚举类RedisSpace定义
+	 * @param key
+	 *            key值
+	 * @return
+	 */
+	boolean exists(String key);
 }

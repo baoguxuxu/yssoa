@@ -17,7 +17,7 @@
 package com.lebaoxun.commons.xss;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 

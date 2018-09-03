@@ -11,7 +11,7 @@ import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
 
 /**
  * 一些常用的工具类

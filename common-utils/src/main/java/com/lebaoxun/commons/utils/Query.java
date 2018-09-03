@@ -19,7 +19,7 @@ package com.lebaoxun.commons.utils;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
 
 import com.baomidou.mybatisplus.plugins.Page;
 import com.lebaoxun.commons.xss.SQLFilter;

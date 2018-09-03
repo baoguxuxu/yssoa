@@ -1,6 +1,6 @@
 package com.lebaoxun.commons.utils;
 
-import org.apache.commons.lang.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
 
 /**
  * 阿拉伯数字 中文数字转换工具

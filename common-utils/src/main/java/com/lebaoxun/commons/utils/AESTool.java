@@ -1,6 +1,6 @@
 package com.lebaoxun.commons.utils;
 
-import org.apache.commons.lang.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.engines.AESFastEngine;
 import org.bouncycastle.crypto.modes.CBCBlockCipher;

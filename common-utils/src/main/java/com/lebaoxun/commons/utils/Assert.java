@@ -65,7 +65,7 @@ public abstract class Assert {
 	 * @throws I18nMessageException if the object array is {@code null} or has no elements
 	 */
 	public static void notEmpty(String str, String errcode,String message) {
-		if (org.apache.commons.lang.StringUtils.isEmpty(str)) {
+		if (com.lebaoxun.commons.utils.StringUtils.isEmpty(str)) {
 			throw new I18nMessageException(errcode,message);
 		}
 	}
@@ -158,7 +158,7 @@ public abstract class Assert {
 	}
 	
 	public static void isNumber(String val, String errcode,String message) {
-		if (!org.apache.commons.lang.StringUtils.isNumeric(val)) {
+		if (!com.lebaoxun.commons.utils.StringUtils.isNumeric(val)) {
 			throw new I18nMessageException(errcode,message);
 		}
 	}

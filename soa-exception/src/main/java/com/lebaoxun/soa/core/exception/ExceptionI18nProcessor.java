@@ -4,7 +4,7 @@ import java.util.Properties;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -39,7 +39,7 @@ public class ExceptionI18nProcessor {
 			msg = i18ne.getInfo();
 		}
 		
-		logger.debug("key={},msg={}",key,msg);
+		logger.error("key={},msg={}",key,msg);
 		
 		if(i18ne.getArgs() != null){
 			msg = String.format(msg, i18ne.getArgs());

@@ -16,7 +16,7 @@
 
 package com.lebaoxun.commons.xss;
 
-import org.apache.commons.lang.StringUtils;
+import com.lebaoxun.commons.utils.StringUtils;
 
 import com.lebaoxun.commons.exception.I18nMessageException;
 

@@ -118,11 +118,14 @@ public class AddressParse {
 	}
 
 	public static void main(String[] args) {
-		String xy = AddressParse.geocode("北京市朝阳区日坛北路33号");
+		String xy = AddressParse.geocode("北京市朝阳区北苑路170号院");
 		System.out.println(xy);
 
+		Map address1 = AddressParse
+				.geodecode("40.005532107628746,116.42239100647166");
+		System.out.println(address1);
 		Map address = AddressParse
-				.geodecode("39.921900885232354,116.44354961480373");
+				.geodecode("40.033933260874406,116.42501070518631");
 		System.out.println(address);
 	}
 

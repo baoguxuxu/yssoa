@@ -69,7 +69,11 @@ public class RedisHashImpl implements
 			public Object doInRedis(RedisConnection con) throws DataAccessException {
 				byte[] key = redisTemplate.getStringSerializer().serialize(newk);
 				byte[] field = redisTemplate.getStringSerializer().serialize(f);
-				return SerializeUtil.unserialize(con.hGet(key, field));
+				if(con.hExists(key, field)){
+					return SerializeUtil.unserialize(con.hGet(key, field));
+					
+				}
+				return null;
 			}
 		});
 	}

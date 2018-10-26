@@ -28,6 +28,12 @@ public class BeanFactoryUtils implements ApplicationContextAware {
 	}
 
 	public synchronized static Object getBean(String beanName) {
-		return context.getBean(beanName);
+		if(context.containsBean(beanName)){
+			return context.getBean(beanName);
+		}
+		return null;
+	}
+	public synchronized static <T> T getBean(Class<T> cls) {
+		return context.getBean(cls);
 	}
 }

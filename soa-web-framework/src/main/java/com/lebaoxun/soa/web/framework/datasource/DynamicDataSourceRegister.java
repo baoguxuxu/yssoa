@@ -175,7 +175,7 @@ public class DynamicDataSourceRegister
     }
     
     public static void main(String[] args) throws Exception {
-		System.out.println(ConfigTools.decrypt("eFbXJ8YYyCvJ55H91mUCWwA5hdsnhF/2DIV5w5y1+cp08Nvn+Jq/BeyN3pYDJKRE4GUCKFSJKIBdVwzB+IYf1Q=="));
+		System.out.println(ConfigTools.decrypt("bNVOqb7WKLX5Bjnw+LMv92taj25KOxDimXxILPQjw42wgv+1lHzOH8kr97xDwWdhpY67QuYCS7sWN4W46YbkFA=="));
 		System.out.println(ConfigTools.encrypt("shancan"));
 		System.out.println(ConfigTools.encrypt("jsfje673HISVIc"));
 	}

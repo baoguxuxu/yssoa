@@ -344,4 +344,108 @@ public class ExportExcelUtil<T> {
 		}
 	}
 	
+	@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
+	public static void exportExcelPlus(String title, List<Map<String,String>> headermaps, List<Map<String,Object>> olddataset, OutputStream out, String pattern, int sheetSize) {
+		if(sheetSize < 100){
+			sheetSize = 1000;
+		}
+		// 声明一个工作薄
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		int dsize = olddataset.size() / sheetSize;
+		if((olddataset.size() % sheetSize) > 0){
+			dsize += 1;
+		}
+		
+		//设置样式
+		// 生成一个样式
+		HSSFCellStyle style = workbook.createCellStyle();
+		// 设置标题样式
+		//居中
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		//背景色
+		style.setFillForegroundColor(HSSFColor.LIGHT_GREEN.index);
+		style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+		//设置边框
+		style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		style.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		style.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		// 生成一个字体
+		HSSFFont font = workbook.createFont();
+		font.setColor(HSSFColor.BLACK.index);
+		font.setFontHeightInPoints((short) 12);
+		font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
+		// 把字体应用到当前的样式
+		style.setFont(font);
+		// 生成并设置另一个样式
+		HSSFCellStyle style2 = workbook.createCellStyle();
+		style2.setBorderBottom(HSSFCellStyle.BORDER_THIN);
+		style2.setBorderLeft(HSSFCellStyle.BORDER_THIN);
+		style2.setBorderRight(HSSFCellStyle.BORDER_THIN);
+		style2.setBorderTop(HSSFCellStyle.BORDER_THIN);
+		
+		style2.setAlignment(HSSFCellStyle.ALIGN_LEFT);
+		style2.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
+		//设置样式
+		
+		for (int ds = 0; ds < dsize; ds++) {
+			int end = (ds+1) * sheetSize;
+			if(end > olddataset.size()){
+				end = olddataset.size();
+			}
+			List<Map<String,Object>> dataset = olddataset.subList(ds * sheetSize, end);
+			// 生成一个表格
+			HSSFSheet sheet = workbook.createSheet();
+			workbook.setSheetName(ds, title+ds);
+			// 设置表格默认列宽度为18个字节
+			sheet.setDefaultColumnWidth((short) 18);
+			// 产生表格标题行
+			HSSFRow row = sheet.createRow(0);
+			for (short i = 0; i < headermaps.size(); i++) {
+				HSSFCell cell = row.createCell(i);
+				cell.setCellStyle(style);
+				HSSFRichTextString text = new HSSFRichTextString(headermaps.get(i).get("label"));
+				cell.setCellValue(text);
+			}
+	
+			// 遍历集合数据，产生数据行
+			for(int index=0; index < dataset.size(); index++) {
+				Map<String,Object> t = dataset.get(index);
+				row = sheet.createRow(index+1);
+				for(int i=0; i < headermaps.size(); i++){
+					HSSFCell cell = row.createCell(i);
+					cell.setCellStyle(style2);
+					
+					String fieldName = headermaps.get(i).get("name");
+					Object value = t.get(fieldName);
+					// 判断值的类型后进行强制类型转换
+					String textValue = value + "";
+					if(fieldName.indexOf("time") > -1 && textValue.length() == 10){
+						textValue = DateUtil.stampToDate(textValue);
+					}
+					// 利用正则表达式判断textValue是否全部由数字组成
+					if(textValue != null) {
+						Pattern p = Pattern.compile("^//d+(//.//d+)?$");
+						Matcher matcher = p.matcher(textValue);
+						if(matcher.matches()) {// 是数字当作double处理
+							cell.setCellValue(Double.parseDouble(textValue));
+						}else {
+							HSSFRichTextString richString = new HSSFRichTextString(textValue);
+							cell.setCellValue(richString);
+						}
+					}
+				}
+				
+			}
+			
+		}
+		
+		try {
+			workbook.write(out);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

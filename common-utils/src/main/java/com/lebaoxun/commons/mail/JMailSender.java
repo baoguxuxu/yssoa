@@ -173,4 +173,14 @@ public class JMailSender {
     	send(recipients, mail.getSubject(), mail.getContent());
     }
     
+    public static void main(String[] args) {
+    	JMailSender sender = new JMailSender("smtp.mxhichina.com","fengyr@i-shancan.com","1234.FYR");
+    	try {
+			sender.send("caiqy@i-shancan.com", "测试", "得分手段");
+		} catch (MessagingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+    
 }

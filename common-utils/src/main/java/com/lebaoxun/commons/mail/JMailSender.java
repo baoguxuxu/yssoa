@@ -26,12 +26,12 @@ public class JMailSender {
     /**
      * 邮件服务器登录验证
      */
-    private transient MailAuthenticator authenticator;
+    protected transient MailAuthenticator authenticator;
  
     /**
      * 邮箱session
      */
-    private transient Session session;
+    protected transient Session session;
  
     /**
      * 初始化邮件发送器
@@ -173,7 +173,7 @@ public class JMailSender {
     	send(recipients, mail.getSubject(), mail.getContent());
     }
     
-    public static void main(String[] args) {
+	public static void main(String[] args) {
     	JMailSender sender = new JMailSender("smtp.mxhichina.com","fengyr@i-shancan.com","1234.FYR");
     	try {
 			sender.send("caiqy@i-shancan.com", "测试", "得分手段");

@@ -46,7 +46,7 @@
     <dependency>
         <groupId>javax</groupId>
         <artifactId>javaee-api</artifactId>
-        <!-- <scope>provided</scope> -->
+        <scope>provided</scope>
     </dependency>
     
     <!-- google java lib -->

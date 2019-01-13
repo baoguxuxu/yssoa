@@ -68,7 +68,7 @@ public class RedisDistributedLock extends AbstractDistributedLock {
                 }
             });
             return !StringUtils.isEmpty(result);*/
-        	if(1!=redisTemplate.opsForValue().increment(key, 1)) return true;
+        	if(1==redisTemplate.opsForValue().increment(key, 1)) return true;
         } catch (Exception e) {
             logger.error("set redis occured an exception", e);
         }

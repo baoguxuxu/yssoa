@@ -16,6 +16,8 @@ public class Oauth2UserLog implements Serializable{
 	private String platformSource;
 	private String host;
 	private Date createTime;
+	private Long timestamp;
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -45,5 +47,11 @@ public class Oauth2UserLog implements Serializable{
 	}
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+	public Long getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
 	}
 }

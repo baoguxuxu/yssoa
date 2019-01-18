@@ -22,19 +22,6 @@ public class RedisDistributedLock extends AbstractDistributedLock {
     
     private ThreadLocal<String> lockFlag = new ThreadLocal<String>();
     
-    public static final String UNLOCK_LUA;
-
-    static {
-        StringBuilder sb = new StringBuilder();
-        sb.append("if redis.call(\"get\",KEYS[1]) == ARGV[1] ");
-        sb.append("then ");
-        sb.append("    return redis.call(\"del\",KEYS[1]) ");
-        sb.append("else ");
-        sb.append("    return 0 ");
-        sb.append("end ");
-        UNLOCK_LUA = sb.toString();
-    }
-
     public RedisDistributedLock(RedisTemplate<String,?> redisTemplate) {
         super();
         this.redisTemplate = redisTemplate;

@@ -359,12 +359,12 @@
   <distributionManagement>    
     <repository>
 	    <id>releases</id>
-	    <url>http://115.159.23.66:8081/nexus/content/repositories/releases</url>
+	    <url>http://39.104.97.47:8081/nexus/content/repositories/releases</url>
   	</repository>    
     
     <snapshotRepository>
 	    <id>snapshots</id>
-	    <url>http://115.159.23.66:8081/nexus/content/repositories/snapshots</url>
+	    <url>http://39.104.97.47:8081/nexus/content/repositories/snapshots</url>
 	  </snapshotRepository>
   </distributionManagement>
   <repositories>

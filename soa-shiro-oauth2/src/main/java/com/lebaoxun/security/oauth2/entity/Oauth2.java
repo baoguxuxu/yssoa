@@ -5,6 +5,7 @@ public class Oauth2 {
 	private String openid;
 	private String assess_token;
 	private Long expires_in;
+	private Long timestamp;
 	
 	public String getOpenid() {
 		return openid;
@@ -24,5 +25,10 @@ public class Oauth2 {
 	public void setExpires_in(Long expires_in) {
 		this.expires_in = expires_in;
 	}
-	
+	public Long getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(Long timestamp) {
+		this.timestamp = timestamp;
+	}
 }

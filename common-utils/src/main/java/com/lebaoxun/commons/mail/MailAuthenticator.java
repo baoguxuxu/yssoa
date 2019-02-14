@@ -31,7 +31,7 @@ public class MailAuthenticator extends Authenticator {
 	    this.password = password;
     }
  
-    String getPassword() {
+    public String getPassword() {
     	return password;
     }
  
@@ -40,7 +40,7 @@ public class MailAuthenticator extends Authenticator {
     	return new PasswordAuthentication(username, password);
     }
  
-    String getUsername() {
+    public String getUsername() {
     	return username;
     }
  
